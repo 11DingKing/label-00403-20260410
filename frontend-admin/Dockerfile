@@ -3,6 +3,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# 构建参数
+ARG VITE_API_BASE_URL
+
 # 复制依赖文件
 COPY package*.json ./
 
@@ -12,7 +15,8 @@ RUN npm install --registry=https://registry.npmmirror.com
 # 复制源代码
 COPY . .
 
-# 构建项目
+# 设置环境变量并构建项目
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
 RUN npm run build
 
 # 生产阶段
